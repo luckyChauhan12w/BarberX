@@ -9,6 +9,10 @@ node_modules/
 # Logs
 logs/
 *.log
+server/logs/
+*.log
+*.audit.json
+
 
 # Database
 *.sqlite
