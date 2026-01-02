@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 30
+    },
+    "auditLog": "C:\\Users\\lucky\\Desktop\\BarberX\\server\\logs\\.5d1727c9ffc1b1d698a83ed3b8c6b4967cce485d-audit.json",
+    "files": [
+        {
+            "date": 1767338651984,
+            "name": "C:\\Users\\lucky\\Desktop\\BarberX\\server\\logs\\all-2026-01-02.log",
+            "hash": "5f4999790bcd6d7f6d058c61efd269fd4f201d5d2d089192c1101630f3341689"
+        }
+    ],
+    "hashType": "sha256"
+}
