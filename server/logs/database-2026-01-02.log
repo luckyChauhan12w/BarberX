@@ -1,0 +1,2 @@
+2026-01-02T07:24:12.124Z [INFO]: MongoDB connection attempt
+2026-01-02T07:24:14.092Z [INFO]: MongoDB connected {"host":"ac-m3u9wy9-shard-00-00.ncjtbsl.mongodb.net","database":"test"}
