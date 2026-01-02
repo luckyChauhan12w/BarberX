@@ -10,3 +10,8 @@
 2026-01-02 12:57:13 [WARN]: Registration failed - Email already exists {"email":"sarthi@example.com"}
 2026-01-02 12:57:13 [ERROR]: 409 - Email already registered {"method":"POST","url":"/api/auth/register","ip":"::1","userAgent":"PostmanRuntime/7.51.0","statusCode":409}
 2026-01-02 12:57:52 [INFO]: SIGINT signal received: closing HTTP server
+2026-01-02 13:01:31 [INFO]: Attempting to connect to MongoDB...
+2026-01-02 13:01:33 [INFO]: MongoDB connected successfully {"host":"ac-m3u9wy9-shard-00-00.ncjtbsl.mongodb.net","database":"test"}
+2026-01-02 13:01:33 [INFO]: Server is running on port 8080 {"port":"8080","environment":"development"}
+2026-01-02 13:01:33 [INFO]: Environment: development
+2026-01-02 13:01:35 [INFO]: SIGINT signal received: closing HTTP server

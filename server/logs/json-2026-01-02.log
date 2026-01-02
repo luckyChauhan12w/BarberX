@@ -17,3 +17,8 @@
 {"level":"debug","message":"Error stack trace","stack":"Error: Email already registered\n    at file:///C:/Users/lucky/Desktop/BarberX/server/src/controller/auth.controller.js:88:15\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)","timestamp":"2026-01-02 12:57:13"}
 {"level":"http","message":"POST /api/auth/register 409 291 - 189.055 ms","timestamp":"2026-01-02 12:57:13"}
 {"level":"info","message":"SIGINT signal received: closing HTTP server","timestamp":"2026-01-02 12:57:52"}
+{"level":"info","message":"Attempting to connect to MongoDB...","timestamp":"2026-01-02 13:01:31"}
+{"database":"test","host":"ac-m3u9wy9-shard-00-00.ncjtbsl.mongodb.net","level":"info","message":"MongoDB connected successfully","timestamp":"2026-01-02 13:01:33"}
+{"environment":"development","level":"info","message":"Server is running on port 8080","port":"8080","timestamp":"2026-01-02 13:01:33"}
+{"level":"info","message":"Environment: development","timestamp":"2026-01-02 13:01:33"}
+{"level":"info","message":"SIGINT signal received: closing HTTP server","timestamp":"2026-01-02 13:01:35"}
