@@ -1,1 +1,0 @@
-2026-01-02 12:57:13 [ERROR]: 409 - Email already registered {"method":"POST","url":"/api/auth/register","ip":"::1","userAgent":"PostmanRuntime/7.51.0","statusCode":409}

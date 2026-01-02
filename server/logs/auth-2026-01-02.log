@@ -1,4 +1,0 @@
-2026-01-02T07:27:06.911Z [INFO]: User registration attempt {"email":"sarthi@example.com"}
-2026-01-02T07:27:07.970Z [INFO]: User registration successful {"userId":"6957734b5676543d400c70e6","email":"sarthi@example.com","role":"CUSTOMER"}
-2026-01-02T07:27:13.112Z [INFO]: User registration attempt {"email":"sarthi@example.com"}
-2026-01-02T07:27:13.292Z [WARN]: Registration failed - Duplicate email {"email":"sarthi@example.com"}
