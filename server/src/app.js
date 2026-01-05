@@ -2,8 +2,8 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import authRoutes from './routes/auth.route.js';
-import { morganMiddleware } from './middlewares/morgan.middleware.js';
-import { errorHandler } from './middlewares/error.middleware.js';
+import { morganMiddleware } from './middlewares/logging/morgan.middleware.js';
+import { errorHandler } from './middlewares/error/error.middleware.js';
 import logger from './config/logger.js';
 
 const app = express();
