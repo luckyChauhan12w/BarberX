@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon index.js",
-    "start": "cross-env NODE_ENV=production node index.js",
+    "start": "node index.js",
     "setup": "node scripts/create-logs-dir.js",
     "logs:all": "tail -f logs/all-*.log",
     "logs:error": "tail -f logs/error-*.log",
@@ -28,7 +28,6 @@
     "winston-daily-rotate-file": "^4.7.1"
   },
   "devDependencies": {
-    "cross-env": "^10.1.0",
     "nodemon": "^3.0.2"
   }
 }
