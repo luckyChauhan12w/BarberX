@@ -8,7 +8,11 @@ const connectDB = async () => {
             timestamp: new Date().toISOString()
         });
 
-        const conn = await mongoose.connect(process.env.MONGODB_URI);
+        const conn = await mongoose.connect(process.env.MONGODB_URI, {
+            dbName: process.env.DATABASE_NAME,
+            autoIndex: true,
+            serverSelectionTimeoutMS: 5000,
+        });
 
         logger.info('MongoDB connected successfully', {
             host: conn.connection.host,

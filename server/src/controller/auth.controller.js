@@ -5,6 +5,13 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import logger from "../config/logger.js";
+import { AUTH_MESSAGES } from "../utils/constants.js"
+import { logWithMeta } from "../utils/logger.js";
+
+const {
+    REQUIRED_FIELDS,
+    INVALID_CREDENTIALS,
+    LOGIN_SUCCESS } = AUTH_MESSAGES;
 
 const generateAccessToken = (userId, email, role) => {
     return jwt.sign(
@@ -42,7 +49,6 @@ const formatUserResponse = (user) => {
         fullName: user.fullName,
         email: user.email,
         role: user.role,
-        isActive: user.isActive,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt
     };
@@ -88,9 +94,6 @@ const register = asyncHandler(async (req, res) => {
         throw new ApiError(409, 'Email already registered');
     }
 
-    logger.debug('Hashing password for user', { email: normalizedEmail });
-    const hashedPassword = await bcrypt.hash(password, 12);
-
     logger.debug('Creating user in database', { email: normalizedEmail, role });
     const user = await User.create({
         fullName: {
@@ -98,9 +101,8 @@ const register = asyncHandler(async (req, res) => {
             lastName: fullName.lastName.trim()
         },
         email: normalizedEmail,
-        password: hashedPassword,
+        password,
         role,
-        isActive: true
     });
 
     logger.info('User created successfully', {
@@ -147,94 +149,48 @@ const register = asyncHandler(async (req, res) => {
 });
 
 const login = asyncHandler(async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, role = 'CUSTOMER' } = req.body;
 
-    logger.info('Login attempt started', { email });
-    logger.authLogger.info('User login attempt', { email, timestamp: new Date().toISOString() });
+    logWithMeta("This is working", { password, role })
 
-    if (!email || !password) {
-        logger.warn('Login failed - Missing credentials');
-        throw new ApiError(400, 'Email and password are required');
+    if (!email || !password || !role) {
+        throw new ApiError(400, REQUIRED_FIELDS);
     }
 
     const normalizedEmail = email.toLowerCase().trim();
 
-    logger.debug('Fetching user from database', { email: normalizedEmail });
-    const user = await User.findOne({ email: normalizedEmail }).select('+password');
+    // First check if user exists at all
+    const userExists = await User.findOne({ email: normalizedEmail });
+    console.log('User exists:', !!userExists); // Debug log
+    if (userExists) {
+        console.log('User role in DB:', userExists.role); // Debug log
+    }
+
+    const user = await User.findOne({
+        email: normalizedEmail,
+        role: { $regex: new RegExp(`^${role}$`, "i") }
+    }).select("+password");
 
     if (!user) {
-        logger.warn('Login failed - User not found', { email: normalizedEmail });
-        logger.authLogger.warn('Login failed - Invalid credentials', {
-            email: normalizedEmail,
-            timestamp: new Date().toISOString()
-        });
-        throw new ApiError(401, 'Invalid email or password');
+        logger.warn('Auth failed: User not found or role mismatch', { email: normalizedEmail, role });
+        throw new ApiError(401, INVALID_CREDENTIALS);
     }
 
-    if (!user.isActive) {
-        logger.warn('Login failed - Account deactivated', {
-            userId: user._id,
-            email: normalizedEmail
-        });
-        logger.authLogger.warn('Login failed - Account deactivated', {
-            userId: user._id,
-            email: normalizedEmail,
-            timestamp: new Date().toISOString()
-        });
-        throw new ApiError(403, 'Your account has been deactivated. Please contact support.');
-    }
-
-    logger.debug('Verifying password', { userId: user._id });
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await user.isPasswordCorrect(password);
+    console.log('Password valid:', isPasswordValid); // Debug log
 
     if (!isPasswordValid) {
-        logger.warn('Login failed - Invalid password', {
-            userId: user._id,
-            email: normalizedEmail
-        });
-        logger.authLogger.warn('Login failed - Wrong password', {
-            userId: user._id,
-            email: normalizedEmail,
-            timestamp: new Date().toISOString()
-        });
-        throw new ApiError(401, 'Invalid email or password');
+        throw new ApiError(401, INVALID_CREDENTIALS);
     }
 
-    logger.debug('Generating tokens for user', { userId: user._id });
     const { accessToken, refreshToken } = await generateTokens(user);
-
-    const userResponse = formatUserResponse(user);
+    const loggedInUser = user.toObject();
+    delete loggedInUser.password;
 
     setCookies(res, accessToken, refreshToken);
 
-    logger.info('User logged in successfully', {
-        userId: user._id,
-        email: normalizedEmail,
-        role: user.role
-    });
-    logger.authLogger.info('User login successful', {
-        userId: user._id,
-        email: normalizedEmail,
-        role: user.role,
-        timestamp: new Date().toISOString()
-    });
-
     return res.status(200).json(
-        new ApiResponse(
-            200,
-            {
-                user: userResponse,
-                tokens: {
-                    accessToken,
-                    refreshToken,
-                    expiresIn: {
-                        accessToken: process.env.ACCESS_TOKEN_EXPIRY || '1h',
-                        refreshToken: process.env.REFRESH_TOKEN_EXPIRY || '30d'
-                    }
-                }
-            },
-            'Login successful'
-        )
+        new ApiResponse(200, { user: loggedInUser, tokens: { accessToken, refreshToken } }, LOGIN_SUCCESS)
     );
 });
 
