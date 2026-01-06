@@ -4,8 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { clearError, registerUser } from '../../features/auth/authSlice';
 import { AuthLayout } from '../../components/auth/AuthLayout';
 
-// Define the available roles for better type safety
-type UserRole = 'CUSTOMER' | 'BARBER' | 'ADMIN';
+type UserRole = 'CUSTOMER' | 'ADMIN';
 
 export const RegisterPage = () => {
     const [firstName, setFirstName] = useState('');
@@ -37,7 +36,7 @@ export const RegisterPage = () => {
         }));
     };
 
-    // Helper function to handle role selection
+
     const handleRoleChange = (selectedRole: UserRole) => {
         setRole(selectedRole);
     };
@@ -48,7 +47,7 @@ export const RegisterPage = () => {
             subtitle={`Join as a ${role.toLowerCase()} to get started`}
         >
             <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Name Row */}
+
                 <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1.5">
                         <label className="text-sm font-semibold text-gray-900">First name</label>
@@ -74,7 +73,7 @@ export const RegisterPage = () => {
                     </div>
                 </div>
 
-                {/* Email Field */}
+
                 <div className="space-y-1.5">
                     <label className="text-sm font-semibold text-gray-900">Email</label>
                     <input
@@ -87,7 +86,6 @@ export const RegisterPage = () => {
                     />
                 </div>
 
-                {/* Password Field */}
                 <div className="space-y-1.5">
                     <label className="text-sm font-semibold text-gray-900">Password</label>
                     <input
@@ -119,27 +117,16 @@ export const RegisterPage = () => {
                 <div className="flex gap-4">
                     <button
                         type="button"
-                        onClick={() => handleRoleChange('BARBER')}
-                        className={`flex-1 rounded-lg border py-2 text-xs font-semibold transition ${role === 'BARBER'
-                                ? 'border-orange-400 bg-orange-50 text-orange-600'
-                                : 'border-gray-100 hover:bg-gray-50 text-gray-600'
-                            }`}
-                    >
-                        Barber
-                    </button>
-                    <button
-                        type="button"
                         onClick={() => handleRoleChange('ADMIN')}
                         className={`flex-1 rounded-lg border py-2 text-xs font-semibold transition ${role === 'ADMIN'
-                                ? 'border-orange-400 bg-orange-50 text-orange-600'
-                                : 'border-gray-100 hover:bg-gray-50 text-gray-600'
+                            ? 'border-orange-400 bg-orange-50 text-orange-600'
+                            : 'border-gray-100 hover:bg-gray-50 text-gray-600'
                             }`}
                     >
                         Admin
                     </button>
                 </div>
 
-                {/* Optional: Reset to Customer */}
                 {role !== 'CUSTOMER' && (
                     <button
                         type="button"

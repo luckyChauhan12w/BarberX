@@ -10,7 +10,6 @@ interface AuthLayoutProps {
 export const AuthLayout = ({ children, title, subtitle }: AuthLayoutProps) => {
     return (
         <div className="flex min-h-screen w-full bg-white font-sans text-slate-900">
-            {/* Left Section: Content */}
             <div className="flex w-full flex-col items-center justify-center px-8 md:w-1/2 lg:px-16">
                 <div className="w-full max-w-100">
                     {/* Logo Section - Common in both */}
@@ -29,7 +28,7 @@ export const AuthLayout = ({ children, title, subtitle }: AuthLayoutProps) => {
                             <p className="mt-1 text-sm text-gray-400">{subtitle}</p>
                         </header>
 
-                        {/* Yahan Form render hoga */}
+
                         {children}
                     </div>
                 </div>
