@@ -32,6 +32,6 @@ export const registerUserValidator = [
 
     body('role')
         .optional()
-        .isIn(['CUSTOMER', 'ADMIN', 'BARBER'])
-        .withMessage('Role must be CUSTOMER, ADMIN, or BARBER')
+        .isIn(['CUSTOMER', 'ADMIN'])
+        .withMessage('Role must be CUSTOMER, ADMIN')
 ];

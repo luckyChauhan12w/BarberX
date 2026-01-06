@@ -2,6 +2,7 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import authRoutes from './routes/auth.route.js';
+import serviceRoutes from './routes/service.routes.js';
 import { morganMiddleware } from './middlewares/logging/morgan.middleware.js';
 import { errorHandler } from './middlewares/error/error.middleware.js';
 import logger from './config/logger.js';
@@ -19,6 +20,12 @@ app.use(cookieParser());
 
 app.use(morganMiddleware);
 
+app.use('/api/auth', authRoutes);
+
+app.use('/api/services', serviceRoutes);
+
+
+
 app.get('/health', (req, res) => {
     logger.info('Health check endpoint accessed');
     res.status(200).json({
@@ -27,8 +34,6 @@ app.get('/health', (req, res) => {
         uptime: process.uptime()
     });
 });
-
-app.use('/api/auth', authRoutes);
 
 app.use((req, res) => {
     logger.warn('Route not found', {
